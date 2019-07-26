@@ -14,6 +14,8 @@
     "discord.js": "github:discordjs/discord.js",
     "moment": "^2.24.0",
     "mysql": "^2.17.1",
-    "wolken": "^0.2.1"
+    "opusscript": "0.0.6",
+    "wolken": "^0.2.1",
+    "ytdl-core": "^0.29.3"
   }
 }

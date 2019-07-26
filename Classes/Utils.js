@@ -137,7 +137,7 @@ class Utils {
 		return new Promise((resolve) => { // Return promise
 			curl.getJSON(url, (err, resp, bod) => { // Get the data
 				if (err) // Handle error
-					return util.error(`Curl`, err);
+					return util.error(`Curl`, JSON.stringify(err));
 				resolve(bod);
 			});
 		});
@@ -145,10 +145,93 @@ class Utils {
 
 	// ---------------------------------------------------------------------------
 
-  
+  getQueue(id) { // Gets queue for guild
+    if (!this.nep.queues[id]) // If it doesn't exist, create it
+      this.nep.queues[id] = [];
+    return this.nep.queues[id]; // Return queue
+  }
 
   // ---------------------------------------------------------------------------
 
+  playQueue(queue) { // Play the queue
+    let util = this; // 'this' is the Util class, duh
+    let msg = this.msg; // Msg, also duh
+    let nep = this.nep; // Nep class
+
+    // If queue finished, leave the voice channel
+    if (queue.length === 0)
+      return util.embed(`<:Sharcat:390652483577577483> | Queue has **finished playing**, see ya' later alligator!`).then(() => {
+        let voiceConnection = msg.guild.voiceConnection;
+        let dispatcher = voiceConnection ? voiceConnection.player.dispatcher : null;
+
+        queue.volume = 100; // Reset volume
+
+        if (voiceConnection !== null)
+          msg.guild.members.get(nep.user.id).voice.channel.leave();
+
+    }).catch((err) => util.error(err.stack, true));
+
+    // Join the voice channel
+    new Promise((resolve, reject) => {
+        let voiceConnection = msg.guild.voiceConnection;
+
+        // If bot is not in voice channel, attempt to join
+        if (voiceConnection == null) {
+            // If member is in voice channel, join it
+            if (msg.member.voice.channel)
+              msg.member.voice.channel.join().then((connection) => resolve(connection)).catch((err) => {
+                // If error clear queue
+                util.error(`Error when trying to join vc:\n\n${err}`);
+                queue.splice(0, queue.length);
+            });
+            else {
+                // If member is not in voice channel, clear queue and do nothing
+                queue.splice(0, queue.length);
+                util.embed(`:x: | You're **not in a voice channel**, I can't do everything myself!`);
+                reject();
+            }
+        } else {
+            // Tests passed, member is in voice channel
+            resolve(voiceConnection);
+        }
+
+    }).then((connection) => {
+        // Import YTDL-Core
+        const ytdl = require('ytdl-core');
+
+        let video = queue[0].video.url; // The url
+        let dispatcher = connection.play(ytdl(video, { // The dispatcher
+            filter: 'audioonly'
+        }));
+
+        msg.channel.send({
+            embed: new nep.discord.MessageEmbed()
+                .setDescription(`<:ThumbsUp:427532146140250124> | **Now playing** [${queue[0].video.title}](${queue[0].video.url}) **[${queue[0].video.author}]**`)
+                .setColor(nep.rColor)
+                .setThumbnail(queue[0].thumbnail.default.url)
+        });
+
+        // Set volume
+        dispatcher.setVolume(!queue.volume ? 1 : Math.floor(queue.volume) / 100);
+
+        // When music end, shift queue
+        dispatcher.on('end', () => {
+            // Wait a second, shift queue and play
+            if (queue.length > 0) {
+                setTimeout(() => {
+                    queue.shift();
+                    util.playQueue(queue);
+                }, 1e3);
+            }
+        });
+
+    }).catch((err) => {
+        if (err !== undefined)
+          util.error(err);
+    });
+  }
+
+  // ---------------------------------------------------------------------------
 
 }
 

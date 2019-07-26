@@ -2,7 +2,7 @@ const Command = require('../../Classes/Command.js');
 const path = require('path');
 const curl = require('curl');
 
-class Ping extends Command {
+class Exec extends Command {
 	constructor(nep) {
 		super(nep, {
 			name: path.basename(__filename, '.js'),
@@ -42,4 +42,4 @@ class Ping extends Command {
 	}
 }
 
-module.exports = Ping;
+module.exports = Exec;
