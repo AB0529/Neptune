@@ -131,6 +131,20 @@ class Utils {
 
     // ---------------------------------------------------------------------------
 
+    getJSON(url) { // Get JSON from api
+      const curl = require('curl');
+      const util = this;
+      return new Promise((resolve) => { // Return promise
+        curl.getJSON(url, (err, resp, bod) => { // Get the data
+          if (err) // Handle error
+            return util.error(`Curl`, err);
+          resolve(bod);
+        });
+      });
+    }
+
+    // ---------------------------------------------------------------------------
+
     selectAll(table, condition, id) { // Get row and error from table
         if (!table) table = '';
         else if (!condition) condition = '';
