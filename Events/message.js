@@ -13,29 +13,28 @@ module.exports = class {
 		nep.rColor = Math.floor(Math.random() * 16777215).toString(16); // Random color generator
 		nep.util = new(require(`../Classes/Utils.js`))(nep, msg); // Nep Utils class
 
-		if (msg.author.bot) return;
-
-		// nep.prefix = msg.guild ? row.length > 0 ? row[0].prefix : nep.prefix : '--';
 		let prefixes = [nep.prefix, '—', `<@${nep.user.id}>`, `<@!${nep.user.id}>`]
 
 		for (thisPrefix of prefixes) {
 			if (msg.content.startsWith(thisPrefix)) nep.prefix = thisPrefix;
 		}
 
-		if (msg.author.bot || !msg.content.startsWith(nep.prefix)) return; // Ignore bots and no prefix
+		if (msg.author.bot || !msg.content.startsWith(nep.prefix)) // Ignore bots and no prefixes
+			return;
 
 		let args = msg.content.slice(nep.prefix.length).trim().split(/ +/g);
 		let command = args.shift();
-		// let args = msg.content.split(/\s+/g);
-		// let command = args.shift().slice(nep.prefix.length).toLowerCase();
 		let cmd = nep.commands.get(command) || nep.commands.get(nep.aliases.get(command));
 
-		if (!cmd) return; // If no command return
+		if (!cmd)
+			return; // If no command return
 
-		let isOwner = msg.author.id == nep.config.discord.owner || msg.author.id == '251091302303662080';
+		let isOwner = msg.author.id == nep.config.discord.owner ? true : false;
 		let isAdminCmd = cmd.info.category.toLowerCase() == 'admin';
 
-		if (cmd.cooldown.has(msg.author.id)) { // Handle command cooldown
+		if (!isOwner) // Make sure owner lock works
+			return nep.util.embed(`:x: | You're **not my master**, go away! Shoo, shoo!`);
+		else if (cmd.cooldown.has(msg.author.id)) { // Handle command cooldown
 			if (cmd.sentCooldownMessage.has(msg.author.id)) return;
 			else return msg.channel.send({
 				embed: new nep.discord.MessageEmbed()
