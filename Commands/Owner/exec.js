@@ -29,9 +29,6 @@ class Ping extends Command {
 			var run = err;
 		};
 
-		// Get the emoji for the correct response
-		let getEmote = () => { run.toString().indexOf('Error') >= 0 ? ':x:' : '✅'; }
-
 		if (run.toString().length >= 1e3) { // If output is too long send paginton
 			m.edit(`Too lazy I'll add later \`7/27/19 12:11 AM\``);
 		}
@@ -39,7 +36,7 @@ class Ping extends Command {
 		m.edit({
 			embed: new nep.discord.MessageEmbed()
 				.addField(`Input`, `\`\`\`css\n${args.join(' ')}\n\`\`\``)
-				.addField(`${getEmote()} Output`, `\`\`\`css\n${run.toString()}\n\`\`\``)
+				.addField(`${run.toString().indexOf('Error') >= 0 ? ':x:' : '✅'} Output`, `\`\`\`css\n${run.toString()}\n\`\`\``)
 		});
 
 	}
