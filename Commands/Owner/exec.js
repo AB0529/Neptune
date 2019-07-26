@@ -21,7 +21,7 @@ class Ping extends Command {
 	// ---------------------------------------------------------------------------
 
 	async run(msg, util, args, nep) {
-		let m = await msg.channel.send(`*Running...*`);
+		let m = await util.embed(`*Running...*`);
 
 		try { // Run the command
 			var run = require('child_process').execSync(args.join(' '));

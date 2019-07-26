@@ -15,9 +15,8 @@ module.exports = class {
 
 		let prefixes = [nep.prefix, '—', `<@${nep.user.id}>`, `<@!${nep.user.id}>`]
 
-		for (thisPrefix of prefixes) {
+		for (thisPrefix of prefixes)
 			if (msg.content.startsWith(thisPrefix)) nep.prefix = thisPrefix;
-		}
 
 		if (msg.author.bot || !msg.content.startsWith(nep.prefix)) // Ignore bots and no prefixes
 			return;
@@ -30,9 +29,8 @@ module.exports = class {
 			return; // If no command return
 
 		let isOwner = msg.author.id == nep.config.discord.owner ? true : false;
-		let isAdminCmd = cmd.info.category.toLowerCase() == 'admin';
 
-		if (!isOwner) // Make sure owner lock works
+		if (!isOwner && cmd.info.category == 'Owner') // Make sure owner lock works
 			return nep.util.embed(`:x: | You're **not my master**, go away! Shoo, shoo!`);
 		else if (cmd.cooldown.has(msg.author.id)) { // Handle command cooldown
 			if (cmd.sentCooldownMessage.has(msg.author.id))
@@ -50,18 +48,22 @@ module.exports = class {
 		try {
 			cmd.setMessage(msg);
 
-			if (!cmd.config.allowDM && !msg.guild)
-				return nep.util.embed(`:x: | This command cannot be used in a DM!`);
+			// Reset cooldown
 			if (cmd.config.cooldown > 0)
 				cmd.startCooldown(msg.author.id);
-			if (cmd.config.locked && msg.author.id !== nep.config.owner)
+			// Make sure command can be used in DMs
+			if (!cmd.config.allowDM && !msg.guild)
+				return nep.util.embed(`:x: | **${command}** cannot be used in a DM!`);
+			// Make sure only owner can use locked commands
+			if (cmd.config.locked && msg.author.id !== nep.config.discord.owner)
 				return nep.util.embed(`🔒 | \`${command}\` has been **locked to the public**! Try again later!`);
-			if (cmd.info.category == 'Owner' && msg.author.id !== `184157133187710977`)
+			// Make sure only owner can use owner commands
+			if (cmd.info.category == 'Owner' && msg.author.id !== (nep.config.discord.owner))
 				return msg.channel.send(`Fuck off`);
 			cmd.run(msg, nep.util, args, nep);
-		} catch (err) {
+		} catch (err) { // Handle error
 			nep.util.error(`${err.stack}`);
-		}
+		};
 
 	} // Method End
 } // Class End
