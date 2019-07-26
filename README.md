@@ -10,10 +10,9 @@ A discord bot built using [Discord.JS](https://discord.js.org/#/) with various f
 
 ```
 NodeJS version 8.x or higher
-Discord.JS master branch
 Discord Bot token
-MySQL
-Neptune-API
+Neptune-API token
+Wolke-API token
 FFMPEG
 ```
 ## Neptune-API
