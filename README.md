@@ -1,6 +1,6 @@
 # Neptune
 
-A discord bot built using Discord.JS with various features.
+A discord bot built using [Discord.JS](https://discord.js.org/#/) with various features.
 
 ## Getting Started
 
@@ -13,7 +13,11 @@ NodeJS version 8.x or higher
 Discord.JS master branch
 Discord Bot token
 MySQL
+Neptune-API
 ```
+## Neptune-API
+
+Many music features require this API to function. Go to [Neptune-API](https://github.com/MoistSenpai/Neptune-API) for install and key.
 
 ### Installing
 
