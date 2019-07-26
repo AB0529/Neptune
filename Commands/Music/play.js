@@ -22,7 +22,7 @@ class Play extends Command {
 
 	async run(msg, util, args, nep) {
 		let queue = util.getQueue(msg.guild.id);
-		let voiceConnection = msg.guild.voiceConnection;
+		let voiceConnection = msg.guild.members.get(nep.user.id).voice.connection
 
 		if (!args[0] && !queue)
       return util.embed(`:x: | The **queue is empty**, add something and try again! \`${nep.prefix}help play\``); // If no args and no queue
