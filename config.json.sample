@@ -1,0 +1,15 @@
+{
+  "discord": {
+    "token": "TOKEN",
+    "prefix": "-"
+  },
+  "mysql": { // MySQL
+    "host": "HOST",
+    "user": "USER",
+    "password": "PASSWORD",
+    "database": "DATABASE"
+  },
+  "nep": { // Neptune API (https://github.com/MoistSenpai/Neptune-API)
+    "key": "KEY"
+  }
+}
