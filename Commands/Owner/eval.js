@@ -1,4 +1,5 @@
 const Command = require('../../Classes/Command.js');
+const stripIndents = require('common-tags').stripIndents;
 const path = require('path');
 const curl = require('curl');
 
@@ -28,7 +29,7 @@ class Eval extends Command {
     try {
       let evaled = eval(args.join(' '));
 
-      if (evaled.toString().indexOf(nep.token) >= 0) evaled = clean(evaled.toString().replace(new RegExp(`${nep.config.token}`, 'gi'), 'What token? I\'m human just like you!')).replace(new RegExp(`${nep.config.mysql.password}`, 'gi'), 'No password here xd');
+      if (evaled.toString().indexOf(nep.token) >= 0) evaled = clean(evaled.toString().replace(new RegExp(`${nep.config.discord.token}`, 'gi'), 'Go away.')).replace(new RegExp(`${nep.config.mysql.password}`, 'gi'), 'No password here xd');
       if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
       if (evaled.length > 1500) return msg.channel.send(`Msg too big fix later.`);
 
@@ -47,6 +48,10 @@ class Eval extends Command {
         .setColor(0xff8d14)
       });
     }
+		function clean(text) {
+				if (typeof(text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
+				else return text;
+		}
 	}
 }
 
