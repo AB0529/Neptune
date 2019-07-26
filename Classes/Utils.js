@@ -134,6 +134,7 @@ class Utils {
 	getJSON(url) { // Get JSON from api
 		const curl = require('curl');
 		const util = this;
+
 		return new Promise((resolve) => { // Return promise
 			curl.getJSON(url, (err, resp, bod) => { // Get the data
 				if (err) // Handle error
