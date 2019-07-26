@@ -1,7 +1,8 @@
 {
   "discord": {
     "token": "TOKEN",
-    "prefix": "-"
+    "prefix": "-",
+    "owner": "YOUR ID"
   },
   "mysql": { // MySQL
     "host": "HOST",
@@ -11,5 +12,8 @@
   },
   "nep": { // Neptune API (https://github.com/MoistSenpai/Neptune-API)
     "key": "KEY"
+  },
+  "wolke": {
+    "key": "KEY" // https://weeb.sh/
   }
 }

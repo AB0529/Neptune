@@ -14,6 +14,7 @@ Discord.JS master branch
 Discord Bot token
 MySQL
 Neptune-API
+FFMPEG
 ```
 ## Neptune-API
 
