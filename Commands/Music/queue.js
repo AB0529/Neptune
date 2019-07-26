@@ -21,7 +21,46 @@ class Queue extends Command {
 	// ---------------------------------------------------------------------------
 
 	async run(msg, util, args, nep) {
-    return;
+    // Get guild's queue
+    let queue = util.getQueue(msg.guild.id);
+    let queueClass = new (require('../../Classes/QueueClass.js'))(msg, util, args, nep);
+
+    // Handle args
+    switch (args[0].toLowerCase()) {
+      // -=-=-=--=-=-=-=-=-=-=-=-=-=
+      case '-list':
+      case '-sq':
+      case 'show':
+      case 'list':
+      case 'sq':
+        queueClass.showQueue(queue);
+        break;
+        // -=-=-=--=-=-=-=-=-=-=-=-=-=
+      case '-shuffle':
+      case 'shuffle':
+        queueClass.shuffle(queue);
+        break;
+        // -=-=-=--=-=-=-=-=-=-=-=-=-=
+      case '-remove':
+      case '-rm':
+      case 'remove':
+      case 'rm':
+        queueClass.remove(queue);
+        break;
+        // -=-=-=--=-=-=-=-=-=-=-=-=-=
+      case '-clear':
+      case '-cq':
+      case 'clear':
+      case 'cq':
+        queueClass.clear(queue);
+        break;
+        // -=-=-=--=-=-=-=-=-=-=-=-=-=
+      default:
+        util.embed(`:x: | Dude, those are **Invalid arguments**, try \`${nep.prefix}help ${this.info.name}\` for more info!`);
+        break;
+        // -=-=-=--=-=-=-=-=-=-=-=-=-=
+    }
+
 	}
 }
 

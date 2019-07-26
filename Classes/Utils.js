@@ -43,12 +43,13 @@ class Utils {
 				.setColor(this.nep.rColor)
 		});
 
-		return new Promise((resolve, reject) => {
-			this.msg.channel.send({
+		return new Promise(async (resolve, reject) => {
+			let m = await this.msg.channel.send({
 				embed: new MessageEmbed()
 					.setDescription(`${string}`)
 					.setColor(this.nep.rColor)
-			}).then((m) => resolve(m));
+			});
+			resolve(m);
 		});
 	}
 
