@@ -100,7 +100,7 @@ class QueueClass {
 			return util.embed(`:x: | What is there to shuffle?!`);
 		// Check if permissions check out
 		else if (msg.author !== queue[0].video.author && !msg.member.hasPermission('ADMINISTRATOR') && !findRole())
-			return util.embed(`:x: | You can only skip if you:\n- \`Queued this\`\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
+			return util.embed(`:x: | You can only shuffle if you:\n- \`Queued this\`\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
 		// If queue is playing, don't shuffle first item
 		else if (voiceConnection !== null) {
 			queue = shuffle(queue, true);
@@ -140,6 +140,64 @@ class QueueClass {
 	}
 
 	// ---------------------------------------------------------------------------
+
+  async remove(queue) { // Removes elements in queue
+    let msg = this.msg;
+		let util = this.util;
+		let args = this.args;
+		let nep = this.nep;
+		let voiceConnection = msg.guild.members.get(nep.user.id).voice.connection;
+    let rm = args[0];
+
+    // If queue exists
+    if (queue.length < 1)
+      return util.embed(`:x: | There's **nothing to remove**, add something with \`${nep.prefix}play\`!`);
+    // Handle no arguments
+    else if (!rm)
+      return util.embed(`:x: | What do you **want to remove**? To see do \`${nep.prefix}queue show\`!`);
+    // Handle arguments being valid
+    else if (!parseInt(rm))
+      return util.embed(`:x: | \`${util.parseArgs(rm)}\` is not a **valid number**!`);
+    else if (!queue[parseInt(rm) - 1])
+      return util.embed(`:x: | \`${util.parseArgs(rm)}\` **doesn't exist** in the queue!`);
+    // Handle permissions
+    else if (msg.author !== queue[parseInt(rm) - 1].video.author && !msg.member.hasPermission('ADMINISTRATOR') && !findRole())
+			return util.embed(`:x: | You can only remove if you:\n- \`Queued the item\`\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
+    // Handle what happens when removing playing item
+    else if (voiceConnection !== null && parseInt(rm) - 1 == 0) {
+      // Skip the first item of queue
+      return util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`).then(() => {
+        queue.splice(0, 1 - 1);
+        let dispatcher = voiceConnection.player.dispatcher;
+
+        if (dispatcher.paused)
+          dispatcher.resume();
+        if (!dispatcher)
+          return;
+
+        return dispatcher.end();
+      });
+    }
+    // If not playing, remove
+    else {
+      queue.remove(parseInt(rm) - 1);
+      util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
+    }
+
+    // Check for NeptuneDJ role
+		function findRole() {
+			let role = msg.guild.roles.find((r) => r.name.toLowerCase().startsWith('NeptuneDJ'.toLowerCase()));
+
+			if (!role) return false;
+			else if (msg.author.id == nep.config.discord.owner)
+				return true;
+			else if (!msg.member.roles.get(role.id))
+				return false;
+			return true;
+		}
+  }
+
+  // ---------------------------------------------------------------------------
 
 }
 
