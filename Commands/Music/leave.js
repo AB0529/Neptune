@@ -41,7 +41,7 @@ class Leave extends Command {
     function findRole() {
       let role = msg.guild.roles.find((r) => r.name.toLowerCase().startsWith('NeptuneDJ'.toLowerCase()));
 
-      if (msg.author.id == '184157133187710977')
+      if (msg.author.id == nep.config.discord.owner)
         return true;
       else if (!role)
         return false;

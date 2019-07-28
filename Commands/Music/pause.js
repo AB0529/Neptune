@@ -54,7 +54,7 @@ class Skip extends Command {
 
       if (!role)
         return false;
-      else if (msg.author.id == '184157133187710977')
+      else if (msg.author.id == nep.config.discord.owner)
         return true;
       else if (!msg.member.roles.get(role.id))
         return false;

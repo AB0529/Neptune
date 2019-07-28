@@ -88,7 +88,10 @@ class Volume extends Command {
       let role = msg.guild.roles.find((r) => r.name.toLowerCase().startsWith('NeptuneDJ'.toLowerCase()));
 
       if (!role) return false;
-      else if (!msg.member.roles.get(role.id)) return false;
+      else if (msg.author.id == nep.config.discord.owner)
+        return true;
+      else if (!msg.member.roles.get(role.id))
+        return false;
       return true;
     }
 

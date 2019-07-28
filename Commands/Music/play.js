@@ -25,6 +25,7 @@ class Play extends Command {
 		let voiceConnection = msg.guild.members.get(nep.user.id).voice.connection;
 		let flagReg = /( -d)/i;
 		let notFlagReg = /^((?! -d).)*$/;
+		let cmd = this;
 
 		// Play queue if no args
 		if (!args[0])
@@ -85,15 +86,11 @@ class Play extends Command {
 					// Send confirmation
 					msg.channel.send({
 						embed: new nep.discord.MessageEmbed()
-							.setDescription(`<:Selfie:390652489919365131> | Enqueued [${bod.result[parseInt(message.content) - 1].video.title}](${bod.result[parseInt(message.content) - 1].video.url}) **[${bod.result[parseInt(message.content) - 1].video.author}]**`)
+							.setDescription(`<:Selfie:390652489919365131> | Enqueued [${bod.result[parseInt(message.content) - 1].video.title}](${bod.result[parseInt(message.content) - 1].video.url}) **[${bod.result[parseInt(message.content) - 1].video.author}]** Use \`${nep.prefix}${cmd.info.name}\` to play!`)
 							.setThumbnail(bod.result[parseInt(message.content) - 1].thumbnail.medium.url)
 							.setColor(nep.rColor)
 					});
 
-					// Play queue if not already playing
-					if (voiceConnection == null)
-						util.playQueue(queue);
-					
 					collector.stop();
 				});
 
@@ -107,28 +104,17 @@ class Play extends Command {
 			if (bod.state == 'fail')
 				return util.embed(`:x: | Oh no, **something happened**!\n\`\`\`css\n${bod.message}\n\`\`\``, m);
 
-			// If queue is not empty, just queue it
-			if (queue.length >= 1) {
-				bod.result[0].video.author = msg.author;
-				queue.push(bod.result[0]);
+			bod.result[0].video.author = msg.author;
+			queue.push(bod.result[0]);
 
-				// Send confirmation
-				return m.edit({
-					embed: new nep.discord.MessageEmbed()
-						.setDescription(`<:Selfie:390652489919365131> | Enqueued [${bod.result[0].video.title}](${bod.result[0].video.url}) **[${bod.result[0].video.author}]**`)
-						.setThumbnail(bod.result[0].thumbnail.medium.url)
-						.setColor(nep.rColor)
-				});
-			} else {
-				// If queue is empty, queue it then play queue
-				bod.result[0].video.author = msg.author;
-				queue.push(bod.result[0]);
+			// Send confirmation
+			return m.edit({
+				embed: new nep.discord.MessageEmbed()
+					.setDescription(`<:Selfie:390652489919365131> | Enqueued [${bod.result[0].video.title}](${bod.result[0].video.url}) **[${bod.result[0].video.author}]** Use \`${nep.prefix}${cmd.info.name}\` to play!`)
+					.setThumbnail(bod.result[0].thumbnail.medium.url)
+					.setColor(nep.rColor)
+			});
 
-				// If not playing, play queue
-				if (voiceConnection == null)
-					util.playQueue(queue);
-				m.delete({ timeout: 500 });
-			}
 		}
 
 	}
