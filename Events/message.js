@@ -7,14 +7,14 @@ module.exports = class {
 
 	// ---------------------------------------------------------------------------
 
-	run(msg) {
+	async run(msg) {
 		let nep = this.nep; // Make nep into nep variable
 
 		nep.rColor = Math.floor(Math.random() * 16777215).toString(16); // Random color generator
 		nep.util = new(require(`../Classes/Utils.js`))(nep, msg); // Nep Utils class
 
 		let prefixes = [nep.prefix, '—', `<@${nep.user.id}>`, `<@!${nep.user.id}>`]
-
+		
 		for (thisPrefix of prefixes)
 			if (msg.content.startsWith(thisPrefix)) nep.prefix = thisPrefix;
 

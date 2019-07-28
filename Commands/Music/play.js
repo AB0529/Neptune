@@ -27,7 +27,7 @@ class Play extends Command {
 		let notFlagReg = /^((?! -d).)*$/;
 		let cmd = this;
 
-		// Play queue if no args
+		// Play queue if in vc
 		if (!args[0])
 			return util.playQueue(queue);
 		// If args but no flag exist send results
