@@ -31,8 +31,8 @@ class QueueClass {
     });
 
     // If more than 10 items in queue, send pages
-    if (queue.length > 2) {
-      while (toList.length) { sep.push(toList.splice(0, 2).join('\n')); }
+    if (queue.length > 10) {
+      while (toList.length) { sep.push(toList.splice(0, 10).join('\n')); }
 
       // Send first page
       let m = await util.embed(`💃 | Queue is **currently ${queueStatus}**\n\n${sep[0]}`);
@@ -86,6 +86,10 @@ class QueueClass {
     else
       return util.embed(`💃 | Queue is **currently ${queueStatus}**\n\n${toList.join('\n')}`);
   }
+
+  // ---------------------------------------------------------------------------
+
+
 
   // ---------------------------------------------------------------------------
 
