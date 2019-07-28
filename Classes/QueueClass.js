@@ -199,6 +199,56 @@ class QueueClass {
 
   // ---------------------------------------------------------------------------
 
+  async clear(queue) { // Clear the queue
+    let msg = this.msg;
+		let util = this.util;
+		let args = this.args;
+		let nep = this.nep;
+		let voiceConnection = msg.guild.members.get(nep.user.id).voice.connection;
+
+    // Check if queue has items
+    if (queue.length < 1)
+      return util.embed(`:x: | There's **nothing to remove**, add something with \`${nep.prefix}play\`!`);
+    // Handle permissions
+    else if (!msg.member.hasPermission('ADMINISTRATOR') && !findRole())
+			return util.embed(`:x: | You can only remove if you:\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
+    // Handle what happens if clear and playing
+    else if (voiceConnection !== null) {
+      // Skip the first item of queue
+      return util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`).then(() => {
+        queue.splice(0, 1 - 1);
+        let dispatcher = voiceConnection.player.dispatcher;
+
+        if (dispatcher.paused)
+          dispatcher.resume();
+        if (!dispatcher)
+          return;
+
+        dispatcher.end();
+        queue = [];
+      });
+    }
+    // If not playing, remove
+    else {
+      queue = [];
+      util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`);
+    }
+
+    // Check for NeptuneDJ role
+		function findRole() {
+			let role = msg.guild.roles.find((r) => r.name.toLowerCase().startsWith('NeptuneDJ'.toLowerCase()));
+
+			if (!role) return false;
+			else if (msg.author.id == nep.config.discord.owner)
+				return true;
+			else if (!msg.member.roles.get(role.id))
+				return false;
+			return true;
+		}
+  }
+
+  // ---------------------------------------------------------------------------
+
 }
 
 module.exports = QueueClass;
