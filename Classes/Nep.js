@@ -18,7 +18,7 @@ class Nep extends Client {
 
 		let file = fs.readFileSync(`${this.config.dir}/queues.json`);
 		this.queues = JSON.parse(file);
-		
+
 		this.utils.log(`Info`, `Client initialised`);
 	}
 
@@ -63,9 +63,6 @@ class Nep extends Client {
 			events.forEach((eventy) => { // Each eventy for all events
 				const event = new(require(`${dir}/${eventy}`))(this); // Initialise event class
 				super.on(eventy.split('.')[0], (...args) => event.run(...args)); // Run event
-				//         if (eventy.split('.')[0] == 'musicMessage') {
-				//           super.on('message', (...args) => event.run(...args));
-				//         }
 			});
 		});
 		this.utils.log(`Events`, `Events Loaded`);
