@@ -103,12 +103,14 @@ class QueueClass {
 			return util.embed(`:x: | You can only shuffle if you:\n- \`Queued this\`\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
 		// If queue is playing, don't shuffle first item
 		else if (voiceConnection !== null) {
-			queue = shuffle(queue, true);
+			server.queue = shuffle(queue, true);
+			;
 			return util.embed(`♻ | Queue has been **shuffled** by **[${msg.author}]**`);
 		}
 		// If not, shuffle everything
 		else {
-			queue = shuffle(queue);
+			server.queue = shuffle(queue);
+			;
 			return util.embed(`♻ | Queue has been **shuffled** by **[${msg.author}]**`);
 		}
 
@@ -147,7 +149,7 @@ class QueueClass {
 		let args = this.args;
 		let nep = this.nep;
 		let voiceConnection = msg.guild.members.get(nep.user.id).voice.connection;
-    let rm = args[0];
+    let rm = args[1];
 
     // If queue exists
     if (queue.length < 1)
@@ -168,6 +170,7 @@ class QueueClass {
       // Skip the first item of queue
       return util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`).then(() => {
         queue.splice(0, 1 - 1);
+
         let dispatcher = voiceConnection.player.dispatcher;
 
         if (dispatcher.paused)
@@ -181,6 +184,7 @@ class QueueClass {
     // If not playing, remove
     else {
       queue.remove(parseInt(rm) - 1);
+			server.update();
       util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
     }
 
@@ -217,6 +221,7 @@ class QueueClass {
       // Skip the first item of queue
       return util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`).then(() => {
         queue.splice(0, 1 - 1);
+
         let dispatcher = voiceConnection.player.dispatcher;
 
         if (dispatcher.paused)
@@ -225,12 +230,13 @@ class QueueClass {
           return;
 
         dispatcher.end();
-        queue = [];
+        server.queue = [];
       });
     }
     // If not playing, remove
     else {
-      queue = [];
+      server.queue = [];
+			;
       util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`);
     }
 

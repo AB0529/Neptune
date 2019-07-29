@@ -32,10 +32,9 @@ class Leave extends Command {
     if (!msg.member.hasPermission('ADMINISTRATOR') && !findRole())
       return util.embed(`:x: | You can only use this if you:\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
 
-    // Clear queue and leave voice channel
-    queue.splice(0, queue.length);
+    // Leave voice channel
     msg.member.voice.channel.leave();
-    util.embed(`⛔ | Queue has been **cleared and I left**, cya! **[${msg.author}]**`);
+    util.embed(`⛔ | Ok bye **[${msg.author}]**`);
 
     // Find NeptuneDJ
     function findRole() {

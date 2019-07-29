@@ -56,7 +56,6 @@ class Volume extends Command {
   // ---------------------------------------------------------------------------
 
   run(msg, util, args, nep) {
-
     // Make sure permissions check out
     if (!msg.member.hasPermission('ADMINISTRATOR') && !findRole()) return util.embed(`:x: | You can only use this if you:\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
     // Handle no args
@@ -77,6 +76,7 @@ class Volume extends Command {
 
     // If everything checks out, set volume for the queue
     queue.volume = parseInt(args[0]);
+    ;
     dispatcher.setVolume(Math.floor(args[0]) / 100);
 
     const bar = new VolumeBar(Math.floor(args[0])); // Initalize volume bar class

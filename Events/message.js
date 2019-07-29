@@ -8,13 +8,16 @@ module.exports = class {
 	// ---------------------------------------------------------------------------
 
 	async run(msg) {
+		if (msg.guild.id !== `552478526713102336` && msg.guild.id !== `332863398104793089`)
+			return;
+
 		let nep = this.nep; // Make nep into nep variable
 
 		nep.rColor = Math.floor(Math.random() * 16777215).toString(16); // Random color generator
 		nep.util = new(require(`../Classes/Utils.js`))(nep, msg); // Nep Utils class
 
 		let prefixes = [nep.prefix, '—', `<@${nep.user.id}>`, `<@!${nep.user.id}>`]
-		
+
 		for (thisPrefix of prefixes)
 			if (msg.content.startsWith(thisPrefix)) nep.prefix = thisPrefix;
 

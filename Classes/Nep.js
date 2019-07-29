@@ -10,12 +10,15 @@ class Nep extends Client {
 	constructor(options) { // Initialise Nep client
 		super({ disableEveryone: true, messageCacheLifetime: 60, messageSweepInterval: 65 }, options.client || {}); // Custom options for client
 
+
 		this.commands = new Collection(); // Commands
 		this.aliases = new Collection(); // Command aliases
 		this.utils = new Utils(this); // Utils Class
 		this.config = options.config ? require(`../${options.config}`) : {}; // Client config
-    this.queues = {};
 
+		let file = fs.readFileSync(`${this.config.dir}/queues.json`);
+		this.queues = JSON.parse(file);
+		
 		this.utils.log(`Info`, `Client initialised`);
 	}
 

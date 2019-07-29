@@ -151,10 +151,14 @@ class Utils {
 		let util = this;
 		let msg = this.msg;
 		let nep = this.nep;
+		let fs = require('fs');
 
 		if (!nep.queues[id])
 			nep.queues[id] = [];
+
+		fs.writeFileSync(`${nep.dir}/queues.json`, JSON.stringify(nep.queues));
 		return nep.queues[id];
+
 	}
 
 	// ---------------------------------------------------------------------------

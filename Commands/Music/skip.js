@@ -36,6 +36,7 @@ class Skip extends Command {
     // Skip the first item of queue
     return util.embed(`⏩ | \`${queue[0].video.title}\` has been skipped by **[${msg.author}]**!`).then(() => {
       queue.splice(0, 1-1);
+      ;
       let dispatcher = voiceConnection.player.dispatcher;
 
       if (dispatcher.paused) dispatcher.resume();
