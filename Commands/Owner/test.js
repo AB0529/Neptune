@@ -25,11 +25,8 @@ class Test extends Command {
 		let q = util.getQueue(msg.guild.id);
 		let row = nep.server;
 
-		q.push(`Small pp`);
-		util.updateQueue();
 		util.send(JSON.stringify(q));
 		util.send(JSON.stringify(row[0]));
-		util.send(JSON.stringify(nep.queues[msg.guild.id]));
 
 		// util.send(JSON.stringify(q));
 	}

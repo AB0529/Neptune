@@ -205,6 +205,11 @@ class QueueClass {
 			util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
       queue.remove(parseInt(rm) - 1);
     }
+		// If playing remove
+		else if (voiceConnection !== null) {
+			util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
+      queue.remove(parseInt(rm) - 1);
+		}
 
     // Check for NeptuneDJ role
 		function findRole() {
@@ -237,27 +242,33 @@ class QueueClass {
     // Handle what happens if clear and playing
     else if (voiceConnection !== null) {
       // Skip the first item of queue
-      return util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`).then(() => {
-        queue.splice(0, 1 - 1);
-				util.resetQueue(msg.guild.id);
-
+      return util.embed(`⛔ | Queue has been  **cleared** by **[${msg.author}]**!`).then(() => {
         let dispatcher = voiceConnection.player.dispatcher;
 
-        if (dispatcher.paused)
-          dispatcher.resume();
-        if (!dispatcher)
-          return;
+				if (!dispatcher)
+					return;
+        else if (dispatcher.paused)
+					dispatcher.resume();
 
         dispatcher.end();
-				queue = [];
+				queue.splice(0, queue.length);
         util.resetQueue(msg.guild.id);
       });
     }
     // If not playing, remove
-    else {
-			queue = [];
-			util.resetQueue(msg.guild.id);
+    else if (voiceConnection == null) {
       util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`);
+
+			queue.splice(0, queue.length);
+			util.resetQueue(msg.guild.id);
+
+			let dispatcher = voiceConnection.player.dispatcher;
+
+			if (dispatcher.paused) dispatcher.resume();
+			if (!dispatcher)
+				return;
+
+			return dispatcher.end();
     }
 
     // Check for NeptuneDJ role

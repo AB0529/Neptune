@@ -33,7 +33,7 @@ class Leave extends Command {
       return util.embed(`:x: | You can only use this if you:\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
 
     // Leave voice channel
-    msg.member.voice.channel.leave();
+    msg.guild.members.get(client.user.id).voice.channel.leave();
     util.embed(`⛔ | Ok bye **[${msg.author}]**`);
 
     // Find NeptuneDJ
