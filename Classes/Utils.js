@@ -179,16 +179,21 @@ class Utils {
 				[id, nep.prefix, '[]']);
 			// Initalize empty array as queue
 			nep.queues[id] = [];
+
 			return nep.queues[id];
 		}
 		// If doesn't exist in local queue, replace with databse queue
 		else if (!nep.queues[id]) {
 			nep.queues[id] = JSON.parse(row[0].queue);
 			nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
+
 			return nep.queues[id];
 		}
+		 
+		// Updata database
 		nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
 		nep.queues[id] = JSON.parse(row[0].queue);
+
 		return nep.queues[id];
 	}
 
