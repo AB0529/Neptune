@@ -29,10 +29,14 @@ module.exports = class {
 			nep.server = sRow;
 		}
 		// If nothing in local queue, update with database queue
-		else if (!nep.queues[msg.guild.id]) {
-			nep.queues[msg.guild.id] = JSON.parse(sRow[0].queue);
-			nep.server = sRow;
-		}
+		// else if (!nep.queues[msg.guild.id]) {
+		// 	nep.queues[msg.guild.id] = JSON.parse(sRow[0].queue);
+		// 	nep.server = sRow;
+		// }
+		// else if (!nep.queues[msg.guild.id] && sRow[0].queues == '[]') {
+		// 	nep.queues[msg.guild.id] = [];
+		// 	nep.server = sRow;
+		// }
 		// Server row
 		nep.server = sRow;
 		// Update queue

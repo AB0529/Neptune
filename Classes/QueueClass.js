@@ -103,14 +103,14 @@ class QueueClass {
 			return util.embed(`:x: | You can only shuffle if you:\n- \`Queued this\`\n- \`Have admin permissions\`\n- \`Have NeptuneDJ role\` `);
 		// If queue is playing, don't shuffle first item
 		else if (voiceConnection !== null) {
-			server.queue = shuffle(queue, true);
-			;
+			queue = shuffle(queue, true);
+			util.getQueue();
 			return util.embed(`♻ | Queue has been **shuffled** by **[${msg.author}]**`);
 		}
 		// If not, shuffle everything
 		else {
-			server.queue = shuffle(queue);
-			;
+			queue = shuffle(queue);
+			util.getQueue();
 			return util.embed(`♻ | Queue has been **shuffled** by **[${msg.author}]**`);
 		}
 
@@ -169,6 +169,19 @@ class QueueClass {
     else if (voiceConnection !== null && parseInt(rm) - 1 == 0) {
       // Skip the first item of queue
       return util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`).then(() => {
+				if (queue.length == 1) {
+					queue = [];
+					util.resetQueue(msg.guild.id);
+
+					let dispatcher = voiceConnection.player.dispatcher;
+
+	        if (dispatcher.paused)
+	          dispatcher.resume();
+	        if (!dispatcher)
+	          return;
+
+	        return dispatcher.end();
+				}
         queue.splice(0, 1 - 1);
 
         let dispatcher = voiceConnection.player.dispatcher;
@@ -181,6 +194,12 @@ class QueueClass {
         return dispatcher.end();
       });
     }
+		// If only 1 item in queue clear it
+		else if (queue.length == 1 && parseInt(rm) - 1 == 0) {
+			util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
+			queue = [];
+			util.resetQueue(msg.guild.id);
+		}
     // If not playing, remove
     else if (voiceConnection == null) {
 			util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
@@ -220,6 +239,7 @@ class QueueClass {
       // Skip the first item of queue
       return util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`).then(() => {
         queue.splice(0, 1 - 1);
+				util.resetQueue(msg.guild.id);
 
         let dispatcher = voiceConnection.player.dispatcher;
 
@@ -229,13 +249,14 @@ class QueueClass {
           return;
 
         dispatcher.end();
-        server.queue = [];
+				queue = [];
+        util.resetQueue(msg.guild.id);
       });
     }
     // If not playing, remove
     else {
-      server.queue = [];
-			;
+			queue = [];
+			util.resetQueue(msg.guild.id);
       util.embed(`⛔ | Queue has been **cleared** by **[${msg.author}]**!`);
     }
 
