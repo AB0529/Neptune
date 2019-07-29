@@ -25,8 +25,9 @@ module.exports = class {
 		let command = args.shift();
 		let cmd = nep.commands.get(command) || nep.commands.get(nep.aliases.get(command));
 
+		// Make sure command exists
 		if (!cmd)
-			return; // If no command return
+			return;
 
 		let isOwner = msg.author.id == nep.config.discord.owner ? true : false;
 
