@@ -182,10 +182,9 @@ class QueueClass {
       });
     }
     // If not playing, remove
-    else {
+    else if (voiceConnection == null) {
+			util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
       queue.remove(parseInt(rm) - 1);
-			server.update();
-      util.embed(`❎ | [${queue[parseInt(rm) - 1].video.title}](${queue[parseInt(rm) - 1].video.url}) has been removed by **[${msg.author}]**!`);
     }
 
     // Check for NeptuneDJ role

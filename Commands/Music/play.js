@@ -81,6 +81,7 @@ class Play extends Command {
 
 					message.delete({ timeout: 1e3 });
 					// Push if all is well
+					bod.result[parseInt(message.content) - 1].video.description = 'null';
 					bod.result[parseInt(message.content) - 1].video.author = `<@${msg.author.id}>`;
 					queue.push(bod.result[parseInt(message.content) - 1]);
 
@@ -105,6 +106,7 @@ class Play extends Command {
 			if (bod.state == 'fail')
 				return util.embed(`:x: | Oh no, **something happened**!\n\`\`\`css\n${bod.message}\n\`\`\``, m);
 
+			bod.result[0].video.description = 'null';
 			bod.result[0].video.author = `<@${msg.author.id}>`;
 			queue.push(bod.result[0]);
 

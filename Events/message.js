@@ -18,6 +18,26 @@ module.exports = class {
 		for (thisPrefix of prefixes)
 			if (msg.content.startsWith(thisPrefix)) nep.prefix = thisPrefix;
 
+		// Add new servers to database
+		let sRow = await nep.util.selectAllServers(msg.guild.id);
+
+		// Add new server if it doesn't exist
+		if (sRow.length <= 0) {
+			nep.connection.query(
+				`INSERT INTO servers (guildId, prefix, queue) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE guildId = ${msg.guild.id}`,
+				[msg.guild.id, nep.prefix, '[]']);
+			nep.server = sRow;
+		}
+		// If nothing in local queue, update with database queue
+		else if (!nep.queues[msg.guild.id]) {
+			nep.queues[msg.guild.id] = JSON.parse(sRow[0].queue);
+			nep.server = sRow;
+		}
+		// Server row
+		nep.server = sRow;
+		// Update queue
+		nep.util.getQueue(msg.guild.id);
+
 		if (msg.author.bot || !msg.content.startsWith(nep.prefix)) // Ignore bots and no prefixes
 			return;
 

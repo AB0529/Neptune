@@ -15,9 +15,7 @@ class Nep extends Client {
 		this.aliases = new Collection(); // Command aliases
 		this.utils = new Utils(this); // Utils Class
 		this.config = options.config ? require(`../${options.config}`) : {}; // Client config
-
-		let file = fs.readFileSync(`${this.config.dir}/queues.json`);
-		this.queues = JSON.parse(file);
+		this.queues = {};
 
 		this.utils.log(`Info`, `Client initialised`);
 	}

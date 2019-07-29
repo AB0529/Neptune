@@ -147,18 +147,49 @@ class Utils {
 
 	// ---------------------------------------------------------------------------
 
-	getQueue(id) { // Gets queue for guild
+	async selectAllServers(id) { // Get all servers from database
 		let util = this;
 		let msg = this.msg;
 		let nep = this.nep;
-		let fs = require('fs');
 
-		if (!nep.queues[id])
+		return new Promise((resolve) => { // Return promise
+			// Get rows from server
+			nep.connection.query(`SELECT * FROM servers WHERE guildId = ${id}`, function(err, row) {
+				// Handle error
+				if (err)
+					throw err;
+				resolve(row);
+			});
+		}).catch((err) => util.error(`MySQL`, err));
+
+	}
+
+	// ---------------------------------------------------------------------------
+
+	getQueue(id) { // Gets queue for guild
+		let nep = this.nep;
+
+		// Servers database
+		let row = nep.server;
+
+		// If doesn't exist, add it
+		if (row.length <= 0) {
+			nep.connection.query(
+				`INSERT INTO servers (guildId, prefix, queue) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE guildId = ${id}`,
+				[id, nep.prefix, '[]']);
+			// Initalize empty array as queue
 			nep.queues[id] = [];
-
-		fs.writeFileSync(`${nep.dir}/queues.json`, JSON.stringify(nep.queues));
+			return nep.queues[id];
+		}
+		// If doesn't exist in local queue, replace with databse queue
+		else if (!nep.queues[id]) {
+			nep.queues[id] = JSON.parse(row[0].queue);
+			nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
+			return nep.queues[id];
+		}
+		nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
+		nep.queues[id] = JSON.parse(row[0].queue);
 		return nep.queues[id];
-
 	}
 
 	// ---------------------------------------------------------------------------
