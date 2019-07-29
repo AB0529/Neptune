@@ -8,13 +8,12 @@ A discord bot built using [Discord.JS](https://discord.js.org/#/) with various f
 
 ### Prerequisites
 
-```
-NodeJS version 8.x or higher
-Discord Bot token
-Neptune-API token
-Wolke-API token
-FFMPEG
-```
+* NodeJS version 8.x or higher
+* Discord Bot token
+* Neptune-API token
+* Wolke-API toke
+* FFMPEG
+
 ## Neptune-API
 
 Many music features require this API to function. Go to [Neptune-API](https://github.com/MoistSenpai/Neptune-API) for install and key.
@@ -28,7 +27,8 @@ Install the dependencies
 npm i
 ```
 
-Make a copy of `config.json.sample` and remove the `.sample` extension.
+* Make a copy of `config.json.sample` and remove the `.sample` extension.
+* Same thing with `queues.json.removethis`
 
 
 
