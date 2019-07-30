@@ -28,8 +28,6 @@ npm i
 ```
 
 * Make a copy of `config.json.sample` and remove the `.sample` extension.
-* Same thing with `queues.json.removethis`
-
 
 
 ## Authors
