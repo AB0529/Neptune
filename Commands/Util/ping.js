@@ -26,7 +26,7 @@ class Ping extends Command {
 
     m.edit({
       embed: new nep.discord.MessageEmbed()
-        .addField(`:ping_pong: Ping my Pong`, `<a:fancy_parrot:435473415613186058> | **Message Delay:** \`${Math.round(m.createdTimestamp - msg.createdTimestamp)}ms\`\n<a:disdat:423642260916404224> | **Websocket:**  \`${Math.round(nep.ws.ping)}ms\``)
+        .addField(`:ping_pong: Ping my Pong`, `⏱ | **Message Delay:** \`${Math.round(m.createdTimestamp - msg.createdTimestamp)}ms\`\n 📡 | **Websocket:**  \`${Math.round(nep.ws.ping)}ms\``)
         .addField(`📖 Random Fact with Nep`, `*${JSON.stringify(bod.text)}*`)
         .setColor(nep.rColor)
     });

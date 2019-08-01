@@ -1,4 +1,5 @@
 {
+  "dir": "/home/moist/Discord/Neptune", // Path to your home directory containing the bot files
   "discord": {
     "token": "TOKEN",
     "prefix": "-",

@@ -1,15 +1,17 @@
+// Misc.
 const fs = require('fs');
 
+// Discord
 const Utils = require('./Utils.js');
 const {
 	Client,
 	Collection
 } = require('discord.js');
 
+
 class Nep extends Client {
 	constructor(options) { // Initialise Nep client
 		super({ disableEveryone: true, messageCacheLifetime: 60, messageSweepInterval: 65 }, options.client || {}); // Custom options for client
-
 
 		this.commands = new Collection(); // Commands
 		this.aliases = new Collection(); // Command aliases

@@ -184,18 +184,15 @@ class Utils {
 		}
 		// If doesn't exist in local queue, replace with databse queue
 		else if (!nep.queues[id] && row[0].queue !== '[]') {
-			console.log(1)
 			nep.queues[id] = JSON.parse(row[0].queue);
 			nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
 
 			return nep.queues[id];
 		} else if (!nep.queues[id] && row[0].queue == '[]') {
-			console.log(2)
 			nep.queues[id] = [];
 
 			return nep.queues[id];
 		} else if (nep.queues[id] && row[0].queue == '[]') {
-			console.log(3)
 			nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
 
 			return nep.queues[id];
