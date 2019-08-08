@@ -33,7 +33,7 @@ class Volume extends Command {
 			examples: [`• ${nep.prefix}${path.basename(__filename, '.js')} 75`],
 			category: path.dirname(__filename).split(path.sep).pop(),
 			cooldown: 1e3,
-			aliases: [],
+			aliases: ['vol'],
 			locked: false,
 			allowDM: false
 		});

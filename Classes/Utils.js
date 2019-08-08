@@ -203,6 +203,8 @@ class Utils {
 		} else if (nep.queues[id] && row[0].queue == '[]') {
 			nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
 			nep.queues[id] = JSON.parse(row[0].queue);
+		} else if (nep.queues[id] && row[0].queue !== '[]') {
+			nep.connection.query(`UPDATE servers SET queue = '${JSON.stringify(nep.queues[id])}' WHERE guildId = ${id}`);
 		}
 
 		return nep.queues[id];
