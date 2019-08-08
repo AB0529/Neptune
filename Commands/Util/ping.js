@@ -21,13 +21,13 @@ class Ping extends Command {
 	// ---------------------------------------------------------------------------
 
 	async run(msg, util, args, nep) {
-    let bod = await util.getJSON(`https://uselessfacts.jsph.pl/random.json`);
+    // let bod = await util.getJSON(`https://uselessfacts.jsph.pl/random.json`);
     let m = await util.embed(`*Pinging...*`);
 
     m.edit({
       embed: new nep.discord.MessageEmbed()
         .addField(`:ping_pong: Ping my Pong`, `⏱ | **Message Delay:** \`${Math.round(m.createdTimestamp - msg.createdTimestamp)}ms\`\n 📡 | **Websocket:**  \`${Math.round(nep.ws.ping)}ms\``)
-        .addField(`📖 Random Fact with Nep`, `*${JSON.stringify(bod.text)}*`)
+        // .addField(`📖 Random Fact with Nep`, `*${JSON.stringify(bod.text)}*`)
         .setColor(nep.rColor)
     });
 	}
