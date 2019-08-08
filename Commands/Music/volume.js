@@ -13,8 +13,8 @@ class VolumeBar {
 		for (let i = 0; i < this.volume / 10; i++)
 			string += '⬜';
 
-		if (string.length != 10)
-			while (string.length != 10)
+		if (string.length !== 10)
+			while (string.length !== 10)
 				string += '⬛';
 
 		return string;
