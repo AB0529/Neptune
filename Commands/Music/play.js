@@ -23,8 +23,8 @@ class Play extends Command {
 	async run(msg, util, args, nep) {
 		let queue = util.getQueue(msg.guild.id);
 		let voiceConnection = msg.guild.members.get(nep.user.id).voice.connection;
-		let flagReg = /( -d)/i;
-		let notFlagReg = /^((?! -d).)*$/;
+		let flagReg = /(^-d)|( -d)/i;
+		let notFlagReg = /^((?!( -d)|^(-d)).)*$/;
 		let cmd = this;
 
 		// Play queue if in vc
