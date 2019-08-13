@@ -51,7 +51,7 @@ module.exports = class {
 		else if (cmd.cooldown.has(msg.author.id)) { // Handle command cooldown
 			if (cmd.sentCooldownMessage.has(msg.author.id))
 				return;
-			else
+			else if (!isOwner)
 				return msg.channel.send({
 					embed: new nep.discord.MessageEmbed()
 						.setDescription(`⏲ | *Please wait* \`${nep.util.msParser(cmd.config.cooldown)}\` *until using this command again!*`)

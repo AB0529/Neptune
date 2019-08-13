@@ -127,7 +127,7 @@ class Utils {
 			this.log(`Error Func`, err);
 			return this.embed(`:x: | Oh swiddle sticks, and **error** occured!\n\`\`\`css\n${err}\n\`\`\``);
 		}
-		return this.embed(`:x: | Oh swiddle sticks, and **error** occured!\n\`\`\`css\n${err}\n\`\`\``);
+		return this.embed(`:x: | Oh swiddle sticks, and **error** occured!\n\`\`\`css\n${err.stack}\n\`\`\``);
 	}
 
 	// ---------------------------------------------------------------------------
@@ -267,13 +267,12 @@ class Utils {
 			}
 
 		}).then((connection) => {
-			// Import YTDL-Core
-			const ytdl = require('ytdl-core');
+			const yt = require('youtube-dl');
 
 			let video = queue[0].video.url; // The url
-			let dispatcher = connection.play(ytdl(video, { // The dispatcher
-				filter: 'audioonly'
-			}));
+			let stream = yt(video, ['-f bestaudio']);
+
+			let dispatcher = connection.play(stream);
 
 			msg.channel.send({
 				embed: new nep.discord.MessageEmbed()
@@ -294,6 +293,10 @@ class Utils {
 						util.playQueue(queue);
 					}, 1e3);
 				}
+			});
+
+			dispatcher.on('error', (err) => {
+				console.error(err);
 			});
 
 		}).catch((err) => {

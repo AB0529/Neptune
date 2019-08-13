@@ -23,10 +23,8 @@ class Test extends Command {
 
 	async run(msg, util, args, nep) {
 		let q = util.getQueue(msg.guild.id);
-		let row = nep.server;
 
-		util.send(JSON.stringify(q));
-		util.send(JSON.stringify(row[0]));
+		util.send(JSON.stringify(q.repeat));
 
 		// util.send(JSON.stringify(q));
 	}

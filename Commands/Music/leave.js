@@ -35,6 +35,7 @@ class Leave extends Command {
     // Leave voice channel
     msg.guild.members.get(nep.user.id).voice.channel.leave();
     util.embed(`⛔ | Ok bye **[${msg.author}]**`);
+    queue[0].repeat = null;
 
     // Find NeptuneDJ
     function findRole() {
